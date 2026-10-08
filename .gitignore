@@ -1,0 +1,22 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 日志与临时文件
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.cache/
+tmp/
+
+# 编辑器 / 操作系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本地环境与密钥（禁止提交）
+.env
+.env.*
+*.local

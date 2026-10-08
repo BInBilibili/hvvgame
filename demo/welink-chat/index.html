@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>群聊界面演示 · WeLink 风格（hvvgame）</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ========== 1. 应用导航栏 ========== -->
+  <aside class="rail" aria-label="应用导航">
+    <div class="rail-avatar" id="railAvatar" title="我（演示身份）">我</div>
+    <nav class="rail-nav">
+      <button class="rail-btn is-active" data-rail="msg" title="消息" aria-label="消息">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-5 4V6Z" />
+        </svg>
+        <span class="rail-badge" id="railBadge">0</span>
+      </button>
+      <button class="rail-btn" data-rail="contacts" title="通讯录" aria-label="通讯录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="3.6" />
+          <path d="M4.5 20c0-3.4 3.4-5.6 7.5-5.6s7.5 2.2 7.5 5.6" />
+        </svg>
+      </button>
+      <button class="rail-btn" data-rail="meeting" title="会议" aria-label="会议">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="6" width="12" height="12" rx="2.5" />
+          <path d="M15 11l6-3.5v9L15 13" />
+        </svg>
+      </button>
+      <button class="rail-btn" data-rail="cloud" title="云空间" aria-label="云空间">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7.5 19a4.5 4.5 0 0 1 .3-9 5.5 5.5 0 0 1 10.4 1.6A3.7 3.7 0 0 1 17 19H7.5Z" />
+        </svg>
+      </button>
+      <button class="rail-btn" data-rail="apps" title="应用" aria-label="应用">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+          <rect x="4" y="4" width="6.5" height="6.5" rx="1.6" />
+          <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6" />
+          <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6" />
+          <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6" />
+        </svg>
+      </button>
+    </nav>
+    <div class="rail-foot">
+      <button class="rail-btn" data-rail="settings" title="设置" aria-label="设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+          <circle cx="12" cy="12" r="3.2" />
+          <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========== 2. 会话列表 ========== -->
+  <section class="list-col" aria-label="会话列表">
+    <header class="list-head">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" />
+        </svg>
+        <input id="searchInput" type="search" placeholder="搜索群 / 群友 / 消息" autocomplete="off" />
+      </div>
+      <button class="icon-btn" id="newChatBtn" title="发起会话" aria-label="发起会话">＋</button>
+    </header>
+
+    <div class="chips" id="filterChips">
+      <button class="chip is-active" data-filter="all">全部</button>
+      <button class="chip" data-filter="unread">未读</button>
+      <button class="chip" data-filter="group">群聊</button>
+      <button class="chip" data-filter="muted">免打扰</button>
+    </div>
+
+    <ul class="conv-list" id="convList"></ul>
+  </section>
+
+  <!-- ========== 3. 聊天区 ========== -->
+  <section class="chat-col" aria-label="聊天区">
+    <header class="chat-head">
+      <div class="chat-title">
+        <h1 id="chatName">—</h1>
+        <span class="chat-sub" id="chatSub">—</span>
+      </div>
+      <div class="chat-actions">
+        <button class="icon-btn" title="语音通话" aria-label="语音通话">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3.5h3l2 5-2 1.5c.9 2.1 2.6 3.8 4.7 4.7l1.5-2 5 2v3c0 1.1-.9 2-2 1.9C10.7 19.2 4.8 13.3 4.3 6.5 4.2 5.4 4.3 3.5 5 3.5Z" />
+          </svg>
+        </button>
+        <button class="icon-btn" title="视频会议" aria-label="视频会议">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="12" height="12" rx="2.5" />
+            <path d="M15 11l6-3.5v9L15 13" />
+          </svg>
+        </button>
+        <button class="icon-btn" title="群文件" aria-label="群文件">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.3l2 2h7.7A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z" />
+          </svg>
+        </button>
+        <button class="icon-btn is-active" id="infoToggle" title="群信息" aria-label="群信息">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+            <circle cx="12" cy="12" r="8.5" /><path d="M12 8.2h.01M11.4 11.6h1.2v4.2h1" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="msg-scroll" id="msgScroll">
+      <div class="msg-list" id="msgList"></div>
+      <div class="typing" id="typingHint" hidden></div>
+    </div>
+
+    <footer class="composer">
+      <div class="composer-tools">
+        <button class="tool-btn" data-tool="emoji" type="button">表情</button>
+        <button class="tool-btn" data-tool="image" type="button">图片</button>
+        <button class="tool-btn" data-tool="file" type="button">文件</button>
+        <button class="tool-btn" data-tool="shot" type="button">截图</button>
+        <button class="tool-btn" data-tool="voice" type="button">语音</button>
+      </div>
+
+      <textarea id="input" rows="1" placeholder="Enter 发送，Shift + Enter 换行"></textarea>
+
+      <div class="composer-foot">
+        <span class="hint" id="charHint">0 / 2000</span>
+        <button class="send-btn" id="sendBtn" type="button" disabled>发送</button>
+      </div>
+
+      <div class="emoji-panel" id="emojiPanel" hidden></div>
+    </footer>
+  </section>
+
+  <!-- ========== 4. 群信息面板（由 app.js 渲染） ========== -->
+  <aside class="info-col" id="infoCol" aria-label="群信息"></aside>
+
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
