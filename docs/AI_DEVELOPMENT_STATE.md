@@ -10,15 +10,16 @@ current_phase: DISCOVERY
 active_work_item: GAME-DATA-001
 ready_queue: [GAME-SIM-001]
 blocked_queue: []
-last_updated: 2026-10-06
+last_updated: 2026-10-08
 ~~~
 
 ## 环境事实
 
 - 工作目录：D:\game\hvvgame
 - node v22.20.0 / npm 10.9.3 / pnpm 11.22.0
-- **不是 git 仓库**（`git status` 报 `fatal: not a git repository`）→ AGENTS.md 第 1 节的只读预检为 NOT_RUN。是否需要 `git init` 待用户决定。
-- 现有文件：AGENTS.md、docs/AI_DEVELOPMENT_WORKFLOW.md、docs/GAME_DESIGN.md、本文件。
+- **已是 git 仓库**：分支 `main`，远端 `origin` = https://github.com/BInBilibili/hvvgame（public），首次提交 `28c2db5`。AGENTS.md 第 1 节的只读预检自此可执行。
+- 网络事实：`github.com:443` 直连不通（`api.github.com:443` 可直连），本仓库 `.git/config` 已配 `http.proxy = http://127.0.0.1:7890`；`gh` 命令走 API 不受影响。
+- 现有文件：AGENTS.md、.gitignore、docs/（AI_DEVELOPMENT_WORKFLOW.md、GAME_DESIGN.md、本文件）、demo/welink-chat/（index.html、app.js、data.js、style.css）。
 
 ## 技术决策（第一切片）
 
@@ -136,3 +137,12 @@ depends_on: [GAME-DATA-001]
 - 未验证或范围外：git 预检 NOT_RUN（非 git 仓库）；所有数值均为未决策。
 - 风险：数据契约若在无任何数值需求的情况下冻结，可能需要二次修订。
 - 下一步：执行 GAME-DATA-001。
+
+### 2026-10-08 建立 git 仓库并推送到 GitHub
+
+- 结果：DONE
+- 行为变化：`git init -b main`；新增 .gitignore；首次提交 `28c2db5`（9 文件 / 2087 行）；创建 public 仓库 `BInBilibili/hvvgame` 并推送 `main`。
+- 验证证据：SIMULATED —— `git rev-parse HEAD` 与 `git rev-parse origin/main` 同为 `28c2db5d171736030527bb9e20a41527d0880754`；`gh api repos/BInBilibili/hvvgame/git/trees/main?recursive=1` 返回 9 个路径，与本地一致；`git diff --cached --check` 无输出。
+- 未验证或范围外：未运行 `node --test`（仓库尚无 src/ 与测试）；未创建 README、LICENSE、CI 或 GitHub Pages。
+- 风险：`.git/config` 的 `http.proxy = http://127.0.0.1:7890` 依赖本机代理，代理关闭时 `git push` 会失败（改为 SSH 或改用直连可绕开）。
+- 下一步：执行 GAME-DATA-001（数据契约 + 加载校验 + 样例群包 + 零依赖测试）。
